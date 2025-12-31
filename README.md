@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoCan News (Web)
 
-## Getting Started
+> "Noise Off, Context On."
 
-First, run the development server:
+세상의 소음은 끄고, 구조적 맥락만 남기는 뉴스 큐레이션 서비스, NoCan News의 랜딩 페이지 리포지토리입니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🏗 Architecture
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+이 프로젝트는 NoCan News의 이중 저장소(Dual Repository) 구조 중 **Frontend(Consumer)**를 담당합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Role**: 사용자 접점 (Landing Page), 구독 신청/해지 처리.
+- **Backend Repo**: NoCan-News-Worker (뉴스 수집 및 발송 담당)
+- **Database**: Supabase (Shared Resource)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+### Landing Page (`/`)
 
-To learn more about Next.js, take a look at the following resources:
+- **Digital Brutalism Design**: 이미지 없이 텍스트와 레이아웃만으로 진정성 강조.
+- **Subscription Form**: Supabase DB에 실시간 구독자 데이터 적재 (INSERT).
+- **Performance**: Vercel 배포에 최적화된 정적/동적 하이브리드 페이지.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Unsubscribe Page (`/unsubscribe`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 이메일 Footer 링크를 통해 접근.
+- 구독 상태를 비활성화 처리 (`UPDATE is_active = false`).
 
-## Deploy on Vercel
+## 🛠 Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Category        | Technology              |
+| --------------- | ----------------------- |
+| Framework       | Next.js 14 (App Router) |
+| Styling         | Tailwind CSS            |
+| Language        | TypeScript              |
+| Database Client | @supabase/supabase-js   |
+| Deployment      | Vercel                  |
