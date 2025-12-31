@@ -1,7 +1,9 @@
 "use client";
 
 import { supabase } from "@/lib/supabase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const LIMIT = 300;
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
@@ -9,10 +11,26 @@ export default function LandingPage() {
     "idle" | "loading" | "success" | "error" | "duplicate"
   >("idle");
   const [isSampleOpen, setIsSampleOpen] = useState(false);
+  const [isFull, setIsFull] = useState(false);
+
+  // 초기 로드 시 구독자 수 체크 (RPC 함수 사용)
+  useEffect(() => {
+    const checkCount = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase.rpc as any)(
+        "get_subscriber_count"
+      );
+      if (!error && data !== null && data >= LIMIT) {
+        setIsFull(true);
+      }
+    };
+    checkCount();
+  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    if (isFull) return; // Double Check
     setStatus("loading");
 
     try {
@@ -39,9 +57,15 @@ export default function LandingPage() {
         <h1 className="font-bold text-xl tracking-tighter uppercase">
           NoCan News
         </h1>
-        <span className="text-xs font-mono border border-black px-2 py-1 rounded-full">
-          BETA
-        </span>
+        {isFull ? (
+          <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-black text-white font-bold animate-pulse">
+            CLOSED
+          </span>
+        ) : (
+          <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-neutral-100 font-bold">
+            BETA : LIMIT {LIMIT}
+          </span>
+        )}
       </header>
 
       <main className="max-w-3xl mx-auto px-6">
@@ -61,24 +85,47 @@ export default function LandingPage() {
 
           <form
             onSubmit={handleSubscribe}
-            className="flex flex-col gap-3 max-w-md"
+            className="flex flex-col gap-3 max-w-md relative"
           >
+            {/* 마감 시 폼을 덮는 오버레이 */}
+            {isFull && (
+              <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[1px] flex items-center justify-center border-2 border-black border-dashed">
+                <div className="text-center">
+                  <span className="bg-black text-white text-lg font-bold px-4 py-2 font-mono block mb-2 transform -rotate-2 shadow-lg">
+                    SOLD OUT
+                  </span>
+                  <p className="text-xs font-bold text-neutral-600 uppercase tracking-widest">
+                    선착순 300명 마감
+                  </p>
+                </div>
+              </div>
+            )}
+
             <input
               type="email"
-              placeholder="이메일 주소"
+              placeholder={
+                isFull ? "현재 모집이 마감되었습니다." : "이메일 주소"
+              }
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm"
+              className={`w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm ${
+                isFull ? "bg-neutral-100 cursor-not-allowed opacity-50" : ""
+              }`}
               required
+              disabled={isFull}
             />
 
             <div className="flex gap-3">
               <button
                 type="submit"
-                disabled={status === "loading" || status === "success"}
-                className="flex-1 bg-black text-white px-6 py-3 font-bold hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors border-2 border-black whitespace-nowrap"
+                disabled={
+                  status === "loading" || status === "success" || isFull
+                }
+                className="flex-1 bg-black text-white px-6 py-3 font-bold hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors border-2 border-black whitespace-nowrap disabled:cursor-not-allowed"
               >
-                {status === "loading"
+                {isFull
+                  ? "모집 마감 (Closed)"
+                  : status === "loading"
                   ? "처리 중..."
                   : status === "success"
                   ? "완료되었습니다"
@@ -94,22 +141,42 @@ export default function LandingPage() {
               </button>
             </div>
 
-            {/* ★ 추가된 마이크로 카피: 여기에 약속을 적습니다 ★ */}
-            <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
-              <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              매일 아침 7시 발송. 광고 없음. 언제든 구독 취소 가능.
-            </p>
+            {/* 마이크로 카피 영역 */}
+            <div className="mt-2 space-y-1">
+              <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
+                <span
+                  className={`inline-block w-2 h-2 rounded-full ${
+                    isFull ? "bg-red-500" : "bg-green-500 animate-pulse"
+                  }`}
+                ></span>
+                {isFull
+                  ? "현재 베타 모집이 마감되었습니다."
+                  : "매일 아침 7시 발송. 광고 없음. 언제든 취소 가능."}
+              </p>
+              {!isFull && (
+                <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  현재 선착순 {LIMIT}명 제한.
+                </p>
+              )}
+            </div>
+
+            {status === "success" && (
+              <p className="text-sm font-mono text-green-700 font-bold mt-2">
+                ✓ 구독이 완료되었습니다. 내일 아침에 만나요.
+              </p>
+            )}
+            {status === "duplicate" && (
+              <p className="text-sm font-mono text-orange-600 mt-2">
+                ⚠️ 이미 구독 중인 이메일입니다.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm font-mono text-red-600 mt-2">
+                ✕ 오류가 발생했습니다. 다시 시도해주세요.
+              </p>
+            )}
           </form>
-          {status === "success" && (
-            <p className="mt-4 text-sm font-mono text-green-700">
-              ✓ 내일 아침 7시부터 발송됩니다.
-            </p>
-          )}
-          {status === "duplicate" && (
-            <p className="mt-4 text-sm font-mono text-neutral-600">
-              이미 등록된 이메일입니다.
-            </p>
-          )}
         </section>
 
         <hr className="border-black" />
@@ -266,9 +333,9 @@ export default function LandingPage() {
                   <div className="bg-white p-3 text-sm space-y-2 border border-neutral-200">
                     <p>
                       <span className="font-bold text-blue-600">📍 Fact:</span>{" "}
-                      원/달러 환율이 2025년 12월 1483.6원으로 8개월 만에 최고치를
-                      기록하며, 원자재를 포함한 수입 물가 지수와 소비자 물가가
-                      상승했습니다.
+                      원/달러 환율이 2025년 12월 1483.6원으로 8개월 만에
+                      최고치를 기록하며, 원자재를 포함한 수입 물가 지수와 소비자
+                      물가가 상승했습니다.
                     </p>
                     <p>
                       <span className="font-bold text-yellow-600">
@@ -338,7 +405,9 @@ export default function LandingPage() {
 
                 <div className="bg-white p-3 rounded mb-3 border border-neutral-200">
                   <p className="text-sm text-neutral-700">
-                    <span className="font-bold text-red-600">🔴 핵심 쟁점:</span>{" "}
+                    <span className="font-bold text-red-600">
+                      🔴 핵심 쟁점:
+                    </span>{" "}
                     노동자 삶의 질 향상 vs 기업 경쟁력 저하 우려. 양측은
                     근로시간 단축의 시급성과 방법론에서 첨예하게 대립하고 있다.
                   </p>
@@ -351,16 +420,17 @@ export default function LandingPage() {
                     </span>
                     한국의 노동생산성은 OECD 평균 대비 낮은 수준이다. 이
                     상황에서 근로시간을 일방적으로 단축하면 기업의 경쟁력 약화로
-                    이어질 수 있으며, 결국 고용 감소라는 역효과를 초래할 수 있다.
+                    이어질 수 있으며, 결국 고용 감소라는 역효과를 초래할 수
+                    있다.
                   </div>
                   <div className="bg-blue-50 p-3 rounded text-neutral-700">
                     <span className="font-bold text-blue-700 block mb-1">
                       진보 측 논리
                     </span>
-                    장시간 노동은 노동자의 건강권을 침해하고 삶의 질을 저하시킨다.
-                    근로시간 단축은 노동자의 기본권 보호 차원에서 필수적이며,
-                    오히려 집중력 향상과 이직률 감소를 통해 장기적으로 생산성
-                    향상에 기여할 수 있다.
+                    장시간 노동은 노동자의 건강권을 침해하고 삶의 질을
+                    저하시킨다. 근로시간 단축은 노동자의 기본권 보호 차원에서
+                    필수적이며, 오히려 집중력 향상과 이직률 감소를 통해
+                    장기적으로 생산성 향상에 기여할 수 있다.
                   </div>
                   <div className="bg-neutral-200 p-3 rounded font-medium text-neutral-800">
                     💡 구조적 의미: 이 논쟁은 단순한 노동시간의 문제가 아니라,
