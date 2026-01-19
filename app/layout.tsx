@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://nocan-news.vercel.app"),
   title: "NoCan News | 소음은 끄고 맥락만 남긴다",
   description:
-    "도파민과 분노를 유발하는 뉴스는 AI가 거르고, 구조적 맥락만 전해드립니다. 선착순 300명 베타 모집 중.",
+    "도파민과 분노를 유발하는 뉴스는 AI가 거르고, 구조적 맥락만 전해드립니다. 지금 베타 신청하세요.",
   openGraph: {
     title: "NoCan News: 세상의 소음 끄기",
     description:

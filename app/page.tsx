@@ -2,9 +2,7 @@
 
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-
-const LIMIT = 300;
+import { useState } from "react";
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
@@ -12,26 +10,10 @@ export default function LandingPage() {
     "idle" | "loading" | "success" | "error" | "duplicate"
   >("idle");
   const [isSampleOpen, setIsSampleOpen] = useState(false);
-  const [isFull, setIsFull] = useState(false);
-
-  // 초기 로드 시 구독자 수 체크 (RPC 함수 사용)
-  useEffect(() => {
-    const checkCount = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data, error } = await (supabase.rpc as any)(
-        "get_subscriber_count"
-      );
-      if (!error && data !== null && data >= LIMIT) {
-        setIsFull(true);
-      }
-    };
-    checkCount();
-  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    if (isFull) return; // Double Check
     setStatus("loading");
 
     try {
@@ -61,20 +43,14 @@ export default function LandingPage() {
           </h1>
           <Link
             href="/archive"
-            className="text-sm font-mono hover:underline underline-offset-4 hidden md:block"
+            className="text-sm font-mono hover:underline underline-offset-4"
           >
             [지난 뉴스]
           </Link>
         </div>
-        {isFull ? (
-          <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-black text-white font-bold animate-pulse">
-            CLOSED
-          </span>
-        ) : (
-          <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-neutral-100 font-bold">
-            BETA : LIMIT {LIMIT}
-          </span>
-        )}
+        <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-neutral-100 font-bold">
+          BETA
+        </span>
       </header>
 
       <main className="max-w-3xl mx-auto px-6">
@@ -94,47 +70,24 @@ export default function LandingPage() {
 
           <form
             onSubmit={handleSubscribe}
-            className="flex flex-col gap-3 max-w-md relative"
+            className="flex flex-col gap-3 max-w-md"
           >
-            {/* 마감 시 폼을 덮는 오버레이 */}
-            {isFull && (
-              <div className="absolute inset-0 z-10 bg-white/80 backdrop-blur-[1px] flex items-center justify-center border-2 border-black border-dashed">
-                <div className="text-center">
-                  <span className="bg-black text-white text-lg font-bold px-4 py-2 font-mono block mb-2 transform -rotate-2 shadow-lg">
-                    SOLD OUT
-                  </span>
-                  <p className="text-xs font-bold text-neutral-600 uppercase tracking-widest">
-                    선착순 300명 마감
-                  </p>
-                </div>
-              </div>
-            )}
-
             <input
               type="email"
-              placeholder={
-                isFull ? "현재 모집이 마감되었습니다." : "이메일 주소"
-              }
+              placeholder="이메일 주소"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm ${
-                isFull ? "bg-neutral-100 cursor-not-allowed opacity-50" : ""
-              }`}
+              className="w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm"
               required
-              disabled={isFull}
             />
 
             <div className="flex gap-3">
               <button
                 type="submit"
-                disabled={
-                  status === "loading" || status === "success" || isFull
-                }
+                disabled={status === "loading" || status === "success"}
                 className="flex-1 bg-black text-white px-6 py-3 font-bold hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors border-2 border-black whitespace-nowrap disabled:cursor-not-allowed"
               >
-                {isFull
-                  ? "모집 마감 (Closed)"
-                  : status === "loading"
+                {status === "loading"
                   ? "처리 중..."
                   : status === "success"
                   ? "완료되었습니다"
@@ -151,23 +104,11 @@ export default function LandingPage() {
             </div>
 
             {/* 마이크로 카피 영역 */}
-            <div className="mt-2 space-y-1">
+            <div className="mt-2">
               <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
-                <span
-                  className={`inline-block w-2 h-2 rounded-full ${
-                    isFull ? "bg-red-500" : "bg-green-500 animate-pulse"
-                  }`}
-                ></span>
-                {isFull
-                  ? "현재 베타 모집이 마감되었습니다."
-                  : "매일 아침 7시 발송. 광고 없음. 언제든 취소 가능."}
+                <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                매일 아침 7시 발송. 광고 없음. 언제든 취소 가능.
               </p>
-              {!isFull && (
-                <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  현재 선착순 {LIMIT}명 제한.
-                </p>
-              )}
             </div>
 
             {status === "success" && (
