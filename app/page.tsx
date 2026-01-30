@@ -53,79 +53,84 @@ export default function LandingPage() {
         </span>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6">
+      <main className="max-w-4xl mx-auto px-6">
         {/* 2. Hero Section: Tuyên ngôn */}
         <section className="relative z-10 w-full max-w-4xl mx-auto px-6 pt-20 pb-32 text-center">
-          <h2 className="text-4xl md:text-6xl font-black leading-tight mb-8 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-black leading-tight mb-8 tracking-tight">
             Sáng nay, <br />
             Điều làm hỏng tâm trạng của bạn <br />
             Không phải là bạn.
           </h2>
-          <p className="text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-10 text-neutral-800">
+          <p className="text-lg md:text-xl font-medium leading-relaxed max-w-3xl mx-auto mb-10 text-neutral-800">
             Tin tức giật gân kích thích tiết cortisol trong não, phá hỏng cả ngày của bạn.{" "}
             <br className="hidden md:block" />
             Chúng tôi loại bỏ 'Dopamine' và 'Nỗi sợ hãi', chỉ giữ lại{" "}
             <strong>Bối cảnh cấu trúc (Context)</strong>.
           </p>
 
-          {/* Khu vực Micro Copy */}
-          <div className="flex flex-col items-center gap-4">
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-            <input
-              type="email"
-              placeholder="Địa chỉ email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm"
-              required
-            />
+          {/* Khu vực Form đăng ký mới */}
+          <div className="w-full max-w-4xl mx-auto mt-12">
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-6 w-full">
+              {/* Row 1: Input & Subscribe Button */}
+              <div className="flex flex-col sm:flex-row items-stretch gap-4 w-full">
+                <input
+                  type="email"
+                  placeholder="Địa chỉ email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="grow h-16 border-2 border-black px-6 text-lg focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono min-w-0"
+                  required
+                />
+                
+                <button
+                  type="submit"
+                  disabled={status === "loading" || status === "success"}
+                  className="h-16 px-8 bg-black text-white text-lg font-bold border-2 border-black hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors whitespace-nowrap min-w-[200px] shrink-0"
+                >
+                  {status === "loading"
+                    ? "..."
+                    : status === "success"
+                    ? "✓ Đã gửi"
+                    : "Nhận miễn phí"}
+                </button>
+              </div>
 
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                disabled={status === "loading" || status === "success"}
-                className="flex-1 bg-black text-white px-6 py-3 font-bold hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors border-2 border-black whitespace-nowrap disabled:cursor-not-allowed"
-              >
-                {status === "loading"
-                  ? "Đang xử lý..."
-                  : status === "success"
-                  ? "Đã hoàn tất"
-                  : "Nhận miễn phí"}
-              </button>
+              {/* Row 2: Sample Button & Info Text */}
+              <div className="flex flex-row items-center gap-6">
+                <button
+                  type="button"
+                  onClick={() => setIsSampleOpen(true)}
+                  className="h-14 px-6 bg-white text-black text-base font-bold border-2 border-black hover:bg-neutral-100 transition-colors whitespace-nowrap"
+                >
+                  Xem mẫu
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setIsSampleOpen(true)}
-                className="px-6 py-3 font-bold bg-white text-black border-2 border-black hover:bg-neutral-100 transition-colors whitespace-nowrap"
-              >
-                Xem mẫu
-              </button>
+                <p className="text-xs font-mono text-neutral-500 leading-relaxed pl-4 border-l-2 border-neutral-200">
+                  Gửi lúc 7:30 sáng mỗi ngày.
+                  <br />
+                  Không quảng cáo. Hủy bất cứ lúc nào.
+                </p>
+              </div>
+            </form>
+
+            {/* Status Messages */}
+            <div className="mt-4 text-left">
+              {status === "success" && (
+                <p className="text-sm font-mono text-green-700 font-bold">
+                  ✓ Đăng ký thành công. Hẹn gặp lại vào sáng mai.
+                </p>
+              )}
+              {status === "duplicate" && (
+                <p className="text-sm font-mono text-orange-600">
+                  ⚠️ Email này đã được đăng ký.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-sm font-mono text-red-600">
+                  ✕ Đã xảy ra lỗi. Vui lòng thử lại.
+                </p>
+              )}
             </div>
-
-            {/* Khu vực Micro Copy */}
-            <div className="mt-2">
-              <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                Gửi lúc 7 giờ 30 phút sáng mỗi ngày. Không quảng cáo. Hủy bất cứ lúc nào.
-              </p>
-            </div>
-
-            {status === "success" && (
-              <p className="text-sm font-mono text-green-700 font-bold mt-2">
-                ✓ Đăng ký thành công. Hẹn gặp lại vào sáng mai.
-              </p>
-            )}
-            {status === "duplicate" && (
-              <p className="text-sm font-mono text-orange-600 mt-2">
-                ⚠️ Email này đã được đăng ký.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="text-sm font-mono text-red-600 mt-2">
-                ✕ Đã xảy ra lỗi. Vui lòng thử lại.
-              </p>
-            )}
-          </form>
           </div>
         </section>
 
@@ -258,8 +263,8 @@ export default function LandingPage() {
               {/* Protection Log */}
               <div className="bg-neutral-100 p-4 border-l-4 border-green-500">
                 <p className="text-sm font-bold text-green-700">
-                  🛡️ Hôm nay AI đã quét tổng cộng 1,247 tin, chặn 45 tin tội phạm, 89 tin đồn nhảm,
-                  123 tin phỉ báng chính trị.
+                  🛡️ Hôm nay AI đã quét tổng cộng 1,542 tin, chặn 68 tin lừa đảo tài chính, 120 tin đồn thất thiệt,
+                  215 tin giật gân câu view.
                 </p>
               </div>
 
@@ -270,27 +275,27 @@ export default function LandingPage() {
                 </h3>
                 <div className="bg-neutral-50 p-4 rounded border-l-4 border-neutral-600">
                   <p className="text-xs text-neutral-400 line-through mb-2">
-                    Khủng hoảng tỷ giá 1500 won, đô la cạn kiệt nhưng chính phủ lại rải tiền... Lo ngại tăng trưởng thấp kéo dài
+                    "Đô la chợ đen loạn giá, Ngân hàng Nhà nước sắp phá giá tiền đồng? Dân buôn gom hàng tích trữ..."
                   </p>
                   <h4 className="text-base font-bold mb-3">
-                    Tỷ giá Won/USD ghi nhận mức 1480 won, ảnh hưởng đến giá nhập khẩu tăng
+                    Tỷ giá USD/VND biến động mạnh, Ngân hàng Nhà nước linh hoạt điều hành
                   </h4>
                   <div className="bg-white p-3 text-sm space-y-2 border border-neutral-200">
                     <p>
                       <span className="font-bold text-blue-600">📍 Sự kiện:</span>{" "}
-                      Tỷ giá Won/USD ghi nhận mức cao nhất trong 8 tháng là 1483.6 won vào tháng 12 năm 2025, làm tăng chỉ số giá nhập khẩu bao gồm nguyên liệu thô và giá tiêu dùng.
+                      Tỷ giá bán ra tại các NHTM vượt mốc 25.400 VND/USD, mức cao nhất từ đầu năm, trong khi tỷ giá trung tâm tiếp tục được điều chỉnh tăng.
                     </p>
                     <p>
                       <span className="font-bold text-yellow-600">
                         📍 Bối cảnh:
                       </span>{" "}
-                      Tình trạng cung tiền Won trong nước nhiều và dòng vốn USD vào thiếu hụt được chỉ ra là nguyên nhân chính khiến đồng Won suy yếu, và đồng Won đang cho thấy mức giảm giá lớn nhất trong số các loại tiền tệ chính.
+                      Chỉ số DXY tăng mạnh trên thị trường quốc tế do Fed duy trì lãi suất cao, cộng hưởng với nhu cầu thanh toán ngoại tệ nhập khẩu nguyên liệu cuối năm tăng cao.
                     </p>
                     <p>
                       <span className="font-bold text-green-600">
                         📍 Hàm ý:
                       </span>{" "}
-                      Tỷ giá hối đoái cao kéo dài sẽ gây áp lực tăng giá, gia tăng gánh nặng cho hộ gia đình và có thể ảnh hưởng tiêu cực đến tốc độ tăng trưởng kinh tế.
+                      Tỷ giá tăng gây áp lực lên chi phí đầu vào của doanh nghiệp sản xuất và chỉ số CPI, buộc NHNN phải cân nhắc các công cụ thị trường mở và bán ngoại tệ để ổn định thị trường.
                     </p>
                   </div>
                 </div>
@@ -303,36 +308,36 @@ export default function LandingPage() {
                 </h3>
                 <div className="bg-neutral-50 p-4 rounded border-l-4 border-neutral-600">
                   <p className="text-xs text-neutral-400 line-through mb-2">
-                    "Không còn đi vay mượn nữa"... Samsung tuyên bố 'độc lập công nghệ' phát triển GPU riêng
+                    "Lộ diện siêu chip AI của Việt Nam đánh bại Nvidia? Sự thật gây sốc về công nghệ lõi..."
                   </p>
                   <h4 className="text-base font-bold mb-3">
-                    Samsung Electronics thành công phát triển GPU di động 100% công nghệ độc quyền
+                    Việt Nam chính thức thương mại hóa 5G, mở đường cho kinh tế số
                   </h4>
                   <div className="bg-white p-3 text-sm space-y-2 border border-neutral-200">
                     <p>
                       <span className="font-bold text-blue-600">📍 Sự kiện:</span>{" "}
-                      Samsung Electronics đã giới thiệu GPU di động được phát triển bằng 100% công nghệ độc quyền mà không phụ thuộc vào công nghệ bên ngoài, và dự kiến sẽ được trang bị cho các sản phẩm Exynos tiếp theo.
+                      Các nhà mạng lớn đồng loạt cung cấp dịch vụ 5G thương mại tại các thành phố lớn với tốc độ truy cập trung bình gấp 10 lần so với 4G.
                     </p>
                     <p>
                       <span className="font-bold text-yellow-600">
                         📍 Bối cảnh:
                       </span>{" "}
-                      Trước đây, GPU được thiết kế dựa trên công nghệ của AMD Mỹ, nhưng với thành công trong việc phát triển GPU riêng lần này, họ muốn giảm sự phụ thuộc vào sở hữu trí tuệ bên ngoài và tiết kiệm chi phí bản quyền khổng lồ.
+                      Chiến lược chuyển đổi số quốc gia đặt mục tiêu phổ cập hạ tầng số, cùng với nhu cầu kết nối IoT cho nhà máy thông minh và xe tự lái đang tăng trưởng mạnh tại Việt Nam.
                     </p>
                     <p>
                       <span className="font-bold text-green-600">
                         📍 Hàm ý:
                       </span>{" "}
-                      Việc phát triển GPU riêng sẽ củng cố khả năng cạnh tranh của Samsung Electronics trong lĩnh vực bán dẫn hệ thống và trở thành bước ngoặt quan trọng để đảm bảo sự độc lập về công nghệ trong kỷ nguyên AI.
+                      Tạo hạ tầng thiết yếu cho phát triển công nghiệp 4.0 và ứng dụng AI, tuy nhiên thách thức nằm ở giá thành thiết bị đầu cuối và độ phủ sóng rộng khắp ngoài các đô thị lớn.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Phân tích xã luận */}
-              <div className="bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 rounded-lg border border-neutral-200">                <h3 className="text-lg font-bold mb-2">⚖️ Phân tích xã luận hôm nay</h3>
+              <div className="bg-linear-to-br from-neutral-50 to-neutral-100 p-4 rounded-lg border border-neutral-200">                <h3 className="text-lg font-bold mb-2">⚖️ Phân tích xã luận hôm nay</h3>
                 <p className="font-semibold text-neutral-700 mb-3">
-                  Tranh luận về việc áp dụng chế độ làm việc 35 giờ/tuần
+                  Tranh luận về quy định nồng độ cồn "bằng 0"
                 </p>
 
                 <div className="bg-white p-3 rounded mb-3 border border-neutral-200">
@@ -340,25 +345,25 @@ export default function LandingPage() {
                     <span className="font-bold text-red-600">
                       🔴 Vấn đề cốt lõi:
                     </span>{" "}
-                    Nâng cao chất lượng cuộc sống người lao động vs Lo ngại giảm sức cạnh tranh của doanh nghiệp. Hai bên đang đối đầu gay gắt về tính cấp thiết và phương pháp rút ngắn thời gian làm việc.
+                    An toàn giao thông tuyệt đối vs Tính thực tiễn và tác động kinh tế. Sự đối đầu giữa quan điểm "Zero Tolerance" và nhu cầu có ngưỡng cho phép.
                   </p>
                 </div>
 
                 <div className="space-y-3 text-sm">
                   <div className="bg-red-50 p-3 rounded text-neutral-700">
                     <span className="font-bold text-red-700 block mb-1">
-                      Logic phe bảo thủ
+                      Logic phe ủng hộ (An toàn)
                     </span>
-                    Năng suất lao động của Hàn Quốc thấp hơn mức trung bình của OECD. Trong tình hình này, việc đơn phương rút ngắn thời gian làm việc có thể dẫn đến suy yếu sức cạnh tranh của doanh nghiệp, và cuối cùng có thể gây ra tác dụng ngược là giảm việc làm.
+                    Quy định nghiêm ngặt đã giúp giảm rõ rệt số vụ tai nạn giao thông nghiêm trọng liên quan đến rượu bia. Cần duy trì kỷ cương "Đã uống rượu bia thì không lái xe" để thay đổi triệt để thói quen văn hóa nhậu nhẹt gây hại.
                   </div>
                   <div className="bg-blue-50 p-3 rounded text-neutral-700">
                     <span className="font-bold text-blue-700 block mb-1">
-                      Logic phe tiến bộ
+                      Logic phe phản biện (Thực tế)
                     </span>
-                    Làm việc nhiều giờ xâm phạm quyền sức khỏe của người lao động và làm giảm chất lượng cuộc sống. Rút ngắn thời gian làm việc là cần thiết để bảo vệ các quyền cơ bản của người lao động, và thậm chí có thể góp phần tăng năng suất trong dài hạn thông qua việc cải thiện sự tập trung và giảm tỷ lệ nghỉ việc.
+                    Quy định "tuyệt đối" là quá cứng nhắc, không tính đến yếu tố sinh học (cồn nội sinh) và đi ngược lại thông lệ của nhiều nước phát triển (có ngưỡng cho phép). Điều này gây khó khăn không cần thiết cho người dân và ảnh hưởng tiêu cực đến ngành F&B, du lịch.
                   </div>
                   <div className="bg-neutral-200 p-3 rounded font-medium text-neutral-800">
-                    💡 Ý nghĩa cấu trúc: Cuộc tranh luận này không chỉ là vấn đề thời gian làm việc đơn thuần, mà là câu hỏi căn bản về mô hình tăng trưởng và giá trị cuộc sống mà xã hội Hàn Quốc theo đuổi.
+                    💡 Ý nghĩa cấu trúc: Phản ánh tư duy quản lý nhà nước đang chuyển dịch sang mô hình kiểm soát chặt chẽ, đặt sự an toàn công cộng lên hàng đầu, chấp nhận đánh đổi lợi ích kinh tế ngắn hạn của một số ngành dịch vụ.
                   </div>
                 </div>
               </div>
