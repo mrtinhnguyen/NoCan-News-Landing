@@ -13,19 +13,19 @@ export default function NewsletterIframe({
     const iframe = iframeRef.current;
     if (!iframe) return;
 
-    // iframe 내부 콘텐츠 높이에 맞춰 높이 조절 함수
+    // Hàm điều chỉnh chiều cao theo nội dung bên trong iframe
     const resizeIframe = () => {
       if (iframe.contentWindow) {
-        // 약간의 여유분(+20px)을 주어 스크롤바 원천 차단
+        // Thêm một chút dư (+20px) để chặn hoàn toàn thanh cuộn
         iframe.style.height =
           iframe.contentWindow.document.body.scrollHeight + 20 + "px";
       }
     };
 
-    // 로드 시 실행
+    // Chạy khi tải
     iframe.addEventListener("load", resizeIframe);
 
-    // 윈도우 리사이즈 시에도 실행 (반응형 대응)
+    // Chạy khi thay đổi kích thước cửa sổ (đáp ứng responsive)
     window.addEventListener("resize", resizeIframe);
 
     return () => {
@@ -40,7 +40,7 @@ export default function NewsletterIframe({
       srcDoc={htmlContent}
       className="w-full border-none block"
       title="Newsletter Content"
-      // 초기 높이 설정 (로딩 중 깜빡임 방지용, 적당히 크게)
+      // Thiết lập chiều cao ban đầu (để tránh nhấp nháy khi đang tải, đặt đủ lớn)
       style={{ minHeight: "600px" }}
     />
   );

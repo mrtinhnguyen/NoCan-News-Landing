@@ -14,30 +14,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nocan-news.vercel.app"),
-  title: "NoCan News | 소음은 끄고 맥락만 남긴다",
+  metadataBase: new URL("https://news.tonyx.dev"),
+  title: "Morning News | Tắt tiếng ồn, giữ lại ngữ cảnh",
   description:
-    "도파민과 분노를 유발하는 뉴스는 AI가 거르고, 구조적 맥락만 전해드립니다. 지금 베타 신청하세요.",
+    "AI lọc bỏ tin tức gây kích thích dopamine và giận dữ, chỉ truyền tải ngữ cảnh cấu trúc. Đăng ký beta ngay bây giờ.",
   openGraph: {
-    title: "NoCan News: 세상의 소음 끄기",
+    title: "Morning News: Tắt tiếng ồn thế giới",
     description:
-      "AI 기반 뉴스 노이즈 캔슬링 & 3줄 인사이트 요약. 지금 베타 신청하세요.",
-    url: "https://nocan-news.vercel.app",
-    siteName: "NoCan News",
+      "AI lọc tiếng ồn tin tức & tóm tắt insight trong 3 dòng. Đăng ký beta ngay bây giờ.",
+    url: "https://news.tonyx.dev",
+    siteName: "Morning News",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "NoCan News Preview",
+        alt: "Morning News Preview",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "NoCan News",
-    description: "AI 뉴스 노이즈 캔슬링 서비스",
+    title: "Morning News",
+    description: "Dịch vụ lọc tiếng ồn tin tức bằng AI",
     images: ["/og-image.png"],
   },
   icons: {
@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="vi">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -1,29 +1,29 @@
-# NoCan News (Web)
+# Morning News (Web)
 
 > "Noise Off, Context On."
 
-세상의 소음은 끄고, 구조적 맥락만 남기는 뉴스 큐레이션 서비스, NoCan News의 랜딩 페이지 리포지토리입니다.
+Đây là kho lưu trữ Landing Page của Morning News, một dịch vụ tuyển chọn tin tức giúp tắt đi tiếng ồn của thế giới và chỉ giữ lại bối cảnh cấu trúc.
 
 ## 🏗 Architecture
 
-이 프로젝트는 NoCan News의 이중 저장소(Dual Repository) 구조 중 **Frontend(Consumer)**를 담당합니다.
+Dự án này đảm nhận vai trò **Frontend (Consumer)** trong cấu trúc kho lưu trữ kép (Dual Repository) của Morning News.
 
-- **Role**: 사용자 접점 (Landing Page), 구독 신청/해지 처리.
-- **Backend Repo**: NoCan-News-Worker (뉴스 수집 및 발송 담당)
-- **Database**: Supabase (Shared Resource)
+- **Role**: Điểm tiếp xúc người dùng (Landing Page), xử lý đăng ký/hủy đăng ký.
+- **Backend Repo**: Morning-News-Worker (Phụ trách thu thập và gửi tin tức)
+- **Database**: Supabase (Tài nguyên chia sẻ)
 
 ## ✨ Features
 
 ### Landing Page (`/`)
 
-- **Digital Brutalism Design**: 이미지 없이 텍스트와 레이아웃만으로 진정성 강조.
-- **Subscription Form**: Supabase DB에 실시간 구독자 데이터 적재 (INSERT).
-- **Performance**: Vercel 배포에 최적화된 정적/동적 하이브리드 페이지.
+- **Digital Brutalism Design**: Nhấn mạnh tính chân thực chỉ bằng văn bản và bố cục mà không có hình ảnh.
+- **Subscription Form**: Lưu dữ liệu người đăng ký theo thời gian thực vào Supabase DB (INSERT).
+- **Performance**: Trang lai tĩnh/động được tối ưu hóa cho việc triển khai Vercel.
 
 ### Unsubscribe Page (`/unsubscribe`)
 
-- 이메일 Footer 링크를 통해 접근.
-- 구독 상태를 비활성화 처리 (`UPDATE is_active = false`).
+- Truy cập thông qua liên kết ở Footer email.
+- Xử lý vô hiệu hóa trạng thái đăng ký (`UPDATE is_active = false`).
 
 ## 🛠 Tech Stack
 

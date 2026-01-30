@@ -23,7 +23,7 @@ function UnsubscribeContent() {
         .from("subscribers")
         .update({ is_active: false })
         .eq("id", id)
-        .select();  // 업데이트된 row 반환
+        .select();  // Trả về hàng đã cập nhật
     
       if (error || !data || data.length === 0) {
         console.error("Unsubscribe failed:", error);
@@ -41,24 +41,24 @@ function UnsubscribeContent() {
       {status === "processing" && (
         <div className="py-10">
           <div className="animate-spin w-8 h-8 border-4 border-neutral-300 border-t-black rounded-full mx-auto mb-4"></div>
-          <p className="font-mono text-sm">요청을 처리하고 있습니다...</p>
+          <p className="font-mono text-sm">Đang xử lý yêu cầu...</p>
         </div>
       )}
 
       {status === "success" && (
         <div className="py-6">
           <div className="text-4xl mb-4">👋</div>
-          <h1 className="text-xl font-bold mb-4">구독이 취소되었습니다.</h1>
+          <h1 className="text-xl font-bold mb-4">Đã hủy đăng ký.</h1>
           <p className="text-sm text-neutral-600 mb-8 leading-relaxed">
-            더 이상 뉴스레터가 발송되지 않습니다.
+            Bạn sẽ không nhận được bản tin nữa.
             <br />
-            그동안 NoCan News를 이용해 주셔서 감사합니다.
+            Cảm ơn bạn đã sử dụng Morning News trong thời gian qua.
           </p>
           <Link
             href="/"
             className="inline-block bg-black text-white px-6 py-3 font-bold text-sm hover:bg-neutral-800 transition-colors border-2 border-black"
           >
-            메인으로 돌아가기
+            Quay lại trang chủ
           </Link>
         </div>
       )}
@@ -67,15 +67,15 @@ function UnsubscribeContent() {
         <div className="py-6">
           <div className="text-4xl mb-4">⚠️</div>
           <h1 className="text-xl font-bold mb-4 text-red-600">
-            오류가 발생했습니다.
+            Đã xảy ra lỗi.
           </h1>
           <p className="text-sm text-neutral-600 mb-6">
-            유효하지 않은 링크이거나
+            Liên kết không hợp lệ hoặc
             <br />
-            이미 처리된 요청일 수 있습니다.
+            yêu cầu có thể đã được xử lý.
           </p>
           <Link href="/" className="underline text-sm font-mono">
-            홈으로 이동
+            Về trang chủ
           </Link>
         </div>
       )}

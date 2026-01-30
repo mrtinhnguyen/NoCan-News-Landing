@@ -1,40 +1,40 @@
-# Project: NoCan News (News Noise Canceling)
+# Project: Morning News (News Noise Canceling)
 
 ## 1. Project Overview
 
-- **Description:** 불안을 파는 뉴스를 차단하고, 안도감과 통찰을 파는 이메일 큐레이션 서비스.
-- **Core Value:** "세상의 소음은 끄고, 구조적 맥락만 남긴다 (Noise Off, Context On)."
-- **Target Audience:** 자극적인 정보에 지쳤지만, 세상의 흐름은 놓치고 싶지 않은 지적 욕구가 있는 개인.
+- **Description:** Dịch vụ tuyển chọn email giúp chặn tin tức bán sự lo lắng, thay vào đó bán sự an tâm và cái nhìn sâu sắc.
+- **Core Value:** "Tắt tiếng ồn thế giới, chỉ giữ lại bối cảnh cấu trúc (Noise Off, Context On)."
+- **Target Audience:** Những cá nhân mệt mỏi với thông tin kích thích nhưng có nhu cầu tri thức không muốn bỏ lỡ dòng chảy của thế giới.
 - **Platform:**
-  - **Landing:** Web (Next.js) - 구독 및 철학 소개.
-  - **Service:** Daily Email Newsletter - 매일 아침 7시 자동 발송.
+  - **Landing:** Web (Next.js) - Giới thiệu triết lý và đăng ký.
+  - **Service:** Daily Email Newsletter - Tự động gửi lúc 7 giờ sáng mỗi ngày.
 
 ---
 
 ## 2. Core Philosophy (Based on Peter Wessel Zapffe)
 
-1. **Isolation (고립):**
+1. **Isolation (Cô lập):**
 
-   - 살인, 성범죄, 연예 가십, 정치적 비방 등 '독성 정보(Toxic Info)'를 AI가 사전 차단.
-   - "오늘 당신은 300건의 쓰레기 정보로부터 보호받았습니다"라는 효능감 제공.
+   - AI chặn trước các 'thông tin độc hại (Toxic Info)' như giết người, tội phạm tình dục, tin đồn giải trí, phỉ báng chính trị.
+   - Cung cấp cảm giác hiệu quả: "Hôm nay bạn đã được bảo vệ khỏi 300 tin tức rác".
 
-2. **Anchoring (고착):**
-   - 불안을 유발하는 낚시성 헤드라인을 '건조한 팩트'로 중화(Neutralize).
-   - 파편화된 정보를 [현상-맥락-함의]의 구조로 묶어 독자에게 지적 통제감 제공.
+2. **Anchoring (Neo đậu):**
+   - Trung hòa (Neutralize) các tiêu đề câu view gây lo lắng bằng 'sự thật khô khan'.
+   - Nhóm các thông tin phân mảnh theo cấu trúc [Hiện tượng - Bối cảnh - Hàm ý] để mang lại cảm giác kiểm soát trí tuệ cho độc giả.
 
 ---
 
 ## 3. Architecture & Tech Stack (Updated)
 
-> "가게(Frontend)"와 "공장(Backend)"이 분리된 **Producer-Consumer 아키텍처**.
+> **Kiến trúc Producer-Consumer** tách biệt giữa "Cửa hàng (Frontend)" và "Nhà máy (Backend)".
 
 ### 3.1 Repository Structure (Dual Repo)
 
-| 구분     | 역할             | 저장소명 (예시)   | 기술 스택             | 배포 환경             |
-| -------- | ---------------- | ----------------- | --------------------- | --------------------- |
-| Consumer | Frontend (Web)   | NoCan-News-Web    | Next.js, Tailwind CSS | Vercel (Serverless)   |
-| Producer | Backend (Worker) | NoCan-News-Worker | NestJS (Standalone)   | GitHub Actions (Cron) |
-| Storage  | Database         | (Common Resource) | Supabase (PostgreSQL) | Cloud Hosted          |
+| Phân loại | Vai trò          | Tên kho lưu trữ (Ví dụ) | Công nghệ             | Môi trường triển khai |
+| --------- | ---------------- | ----------------------- | --------------------- | --------------------- |
+| Consumer  | Frontend (Web)   | Morning-News-Web          | Next.js, Tailwind CSS | Vercel (Serverless)   |
+| Producer  | Backend (Worker) | Morning-News-Worker       | NestJS (Standalone)   | GitHub Actions (Cron) |
+| Storage   | Database         | (Tài nguyên chung)      | Supabase (PostgreSQL) | Cloud Hosted          |
 
 ### 3.2 Detailed Stack
 
@@ -42,28 +42,28 @@
 
 - **Framework:** Next.js (App Router)
 - **Styling:** Tailwind CSS (Digital Brutalism Design)
-- **Auth/DB:** `@supabase/supabase-js` (Anon Key 사용)
+- **Auth/DB:** `@supabase/supabase-js` (Sử dụng Anon Key)
 
 **Backend (Worker):**
 
-- **Framework:** NestJS (Standalone Mode for Batch Processing)
-- **Scraping:** `rss-parser` (Google News), `cheerio` (본문)
+- **Framework:** NestJS (Standalone Mode cho xử lý hàng loạt)
+- **Scraping:** `rss-parser` (Google News), `cheerio` (Nội dung)
 - **AI Engine:** Gemini API (`gemini-2.5-flash`)
 - **Email:** `nodemailer` (Gmail SMTP)
-- **DB Access:** Supabase Client (Service Role Key 사용 - RLS 우회)
+- **DB Access:** Supabase Client (Sử dụng Service Role Key - Bỏ qua RLS)
 
 ### 3.3 End-to-End System Flow
 
-1. **Subscribe (Web):** 사용자 랜딩 페이지 접속 -> 이메일 입력 -> Supabase INSERT (Next.js).
-2. **Trigger (Worker):** 매일 07:00 KST, GitHub Actions가 NestJS 워커 실행.
-3. **Fetch Users:** Supabase에서 `is_active: true`인 구독자 목록 SELECT.
-4. **Collect Data:** Google News RSS 수집 (Business, Tech, Policy, Editorial).
+1. **Subscribe (Web):** Người dùng truy cập trang đích -> Nhập email -> Supabase INSERT (Next.js).
+2. **Trigger (Worker):** 07:00 KST mỗi ngày, GitHub Actions chạy NestJS worker.
+3. **Fetch Users:** SELECT danh sách người đăng ký có `is_active: true` từ Supabase.
+4. **Collect Data:** Thu thập Google News RSS (Kinh doanh, Công nghệ, Chính sách, Xã luận).
 5. **AI Process:**
-   - **Filter:** 독성 뉴스(살인, 비방 등) 제거.
-   - **Detox:** 헤드라인 중화 및 [Fact-Context-Implication] 요약.
-   - **Synthesis:** 좌우 사설 통합 분석 (정반합 구조화).
-6. **Send:** Nodemailer로 HTML 이메일 발송 (Footer에 unsubscribe 링크 포함).
-7. **Unsubscribe (Web):** 사용자가 메일 하단 링크 클릭 -> Next.js 숨겨진 페이지에서 `UPDATE is_active = false` 처리.
+   - **Filter:** Loại bỏ tin tức độc hại (giết người, phỉ báng, v.v.).
+   - **Detox:** Trung hòa tiêu đề và tóm tắt [Sự kiện - Bối cảnh - Hàm ý].
+   - **Synthesis:** Phân tích tổng hợp xã luận trái chiều/phải chiều (Cấu trúc Chính-Phản-Hợp).
+6. **Send:** Gửi email HTML qua Nodemailer (Bao gồm liên kết hủy đăng ký ở Footer).
+7. **Unsubscribe (Web):** Người dùng nhấp vào liên kết ở cuối email -> Trang ẩn Next.js xử lý `UPDATE is_active = false`.
 
 ---
 
@@ -71,28 +71,28 @@
 
 ### 4.1 Schema
 
-#### `public.subscribers` (구독자)
+#### `public.subscribers` (Người đăng ký)
 
 ```sql
 create table public.subscribers (
   id uuid not null default gen_random_uuid (),
   email text not null,
-  is_active boolean not null default true, -- 구독 상태 (Soft Delete)
+  is_active boolean not null default true, -- Trạng thái đăng ký (Soft Delete)
   created_at timestamp with time zone not null default now(),
   constraint subscribers_pkey primary key (id),
   constraint subscribers_email_key unique (email)
 );
 ```
 
-#### `public.newsletters` (뉴스레터)
+#### `public.newsletters` (Bản tin)
 
 ```sql
 create table public.newsletters (
   id uuid not null default gen_random_uuid (),
-  title text not null,                      -- 뉴스레터 제목
-  content_html text not null,               -- 발송용 HTML 콘텐츠
-  content_data jsonb not null,              -- 원본 데이터 (JSON)
-  send_date date not null,                  -- 발송 날짜
+  title text not null,                      -- Tiêu đề bản tin
+  content_html text not null,               -- Nội dung HTML để gửi
+  content_data jsonb not null,              -- Dữ liệu gốc (JSON)
+  send_date date not null,                  -- Ngày gửi
   created_at timestamp with time zone not null default now(),
   constraint newsletters_pkey primary key (id)
 );
@@ -101,7 +101,7 @@ create table public.newsletters (
 ### 4.2 Functions
 
 ```sql
--- 활성 구독자 수 조회
+-- Truy vấn số lượng người đăng ký đang hoạt động
 create function public.get_subscriber_count()
 returns integer as $$
   select count(*)::integer from public.subscribers where is_active = true;
@@ -110,35 +110,35 @@ $$ language sql stable;
 
 ### 4.3 Security Policy (RLS)
 
-- **Frontend (Anon Key):** INSERT only. (누구나 구독 신청 가능, 조회 불가)
-- **Backend (Service Role Key):** SELECT, UPDATE all. (모든 데이터 접근 가능)
+- **Frontend (Anon Key):** Chỉ INSERT. (Bất kỳ ai cũng có thể đăng ký, không thể truy vấn)
+- **Backend (Service Role Key):** SELECT, UPDATE tất cả. (Truy cập tất cả dữ liệu)
 
 ---
 
 ## 5. Key Features (Content Structure)
 
-### Part 1. Protection Log (방어 로그)
+### Part 1. Protection Log (Nhật ký bảo vệ)
 
-- **목적:** Isolation의 가시화.
-- **형태:**
-  > "오늘 AI가 총 2,450건을 스캔하여 **살인/범죄 120건, 정치비방 340건**을 차단했습니다."
+- **Mục đích:** Trực quan hóa sự cô lập (Isolation).
+- **Hình thức:**
+  > "Hôm nay AI đã quét tổng cộng 2.450 tin, chặn **120 tin giết người/tội phạm, 340 tin phỉ báng chính trị**."
 
-### Part 2. Headline Detox & Micro-Briefing (뉴스 중화)
+### Part 2. Headline Detox & Micro-Briefing (Trung hòa tin tức)
 
-- **목적:** Anchoring. 클릭 없이 맥락 이해.
-- **구성:**
-  - **[AI 수정]** 삼성전자, 업황 둔화로 52주 신저가 기록 (건조한 톤)
-  - **3-Line Insight:** Fact / Context / Implication
+- **Mục đích:** Anchoring. Hiểu bối cảnh mà không cần nhấp chuột.
+- **Cấu trúc:**
+  - **[AI Chỉnh sửa]** Samsung Electronics ghi nhận mức thấp mới trong 52 tuần do suy thoái ngành (Giọng điệu khô khan)
+  - **3-Line Insight:** Sự kiện / Bối cảnh / Hàm ý
 
-### Part 3. Editorial Synthesis (사설 통합)
+### Part 3. Editorial Synthesis (Tổng hợp xã luận)
 
-- **목적:** 편향 제거 및 구조적 쟁점 파악.
-- **로직:** 보수 vs 진보 사설 매칭 -> AI가 **[쟁점 - 양측 논리 - 구조적 본질]** 리포트 작성.
+- **Mục đích:** Loại bỏ thiên kiến và nắm bắt các vấn đề cấu trúc.
+- **Logic:** Khớp xã luận Bảo thủ vs Tiến bộ -> AI viết báo cáo **[Vấn đề - Lập luận hai bên - Bản chất cấu trúc]**.
 
 ### Part 4. Hidden Feature (Unsubscribe)
 
-- **목적:** 사용자의 자유 의지 존중 및 스팸 처리 방지.
-- **구현:** 이메일 Footer에 개별 수신 거부 링크 제공 -> Next.js `/unsubscribe` 페이지로 연결.
+- **Mục đích:** Tôn trọng ý chí tự do của người dùng và ngăn chặn xử lý spam.
+- **Triển khai:** Cung cấp liên kết từ chối nhận riêng lẻ ở Footer email -> Liên kết đến trang `/unsubscribe` của Next.js.
 
 ---
 
@@ -148,17 +148,19 @@ $$ language sql stable;
 
 - **Source:** Google News RSS (Topics + Custom Queries)
 - **Libraries:** `rss-parser`, `axios`, `cheerio`
-- **Constants:** `constants.ts`에 정의된 RSS URL 활용.
+- **Constants:** Sử dụng RSS URL được định nghĩa trong `constants.ts`.
 
 ### 6.2 AI Prompt Engineering (Gemini 2.5 Flash)
 
-- **Role 1 (Filter/Detox):** `isToxic` 판별 및 건조한 제목 재작성.
-- **Role 2 (Synthesis):** 사설 비교 분석. 감정적 어휘 삭제, 논리적 쟁점 추출.
+- **Role 1 (Filter/Detox):** Phân biệt `isToxic` và viết lại tiêu đề khô khan.
+- **Role 2 (Synthesis):** Phân tích so sánh xã luận. Xóa từ ngữ cảm xúc, trích xuất vấn đề logic.
 
 ### 6.3 Gemini API Limits (Free Tier)
 
-| 제한 항목              | 값   |
-| ---------------------- | ---- |
-| 분당 최대 요청 수      | 5    |
-| 분당 최대 입력 토큰 수 | 250k |
-| 일일 최대 요청 수      | 20   |
+| Mục hạn chế            | Giá trị |
+| ---------------------- | ------- |
+| Số yêu cầu tối đa/phút | 5       |
+| Số token đầu vào tối đa/phút | 250k    |
+| Số yêu cầu tối đa/ngày | 20      |
+
+© 2025 Morning News. All rights reserved.

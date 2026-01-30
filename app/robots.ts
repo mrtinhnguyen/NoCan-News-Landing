@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://nocan-news.vercel.app/sitemap.xml",
+    sitemap: "https://morning-news.vercel.app/sitemap.xml",
   };
 }

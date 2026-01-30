@@ -39,13 +39,13 @@ export default function LandingPage() {
       <header className="border-b-2 border-black p-4 flex justify-between items-center sticky top-0 bg-white z-50">
         <div className="flex items-center gap-6">
           <h1 className="font-bold text-xl tracking-tighter uppercase">
-            NoCan News
+            Morning News
           </h1>
           <Link
             href="/archive"
             className="text-sm font-mono hover:underline underline-offset-4"
           >
-            [지난 뉴스]
+            [Tin cũ]
           </Link>
         </div>
         <span className="text-xs font-mono border border-black px-2 py-1 rounded-full bg-neutral-100 font-bold">
@@ -54,27 +54,26 @@ export default function LandingPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-6">
-        {/* 2. Hero Section: 선언문 */}
-        <section className="py-24 md:py-32">
+        {/* 2. Hero Section: Tuyên ngôn */}
+        <section className="relative z-10 w-full max-w-4xl mx-auto px-6 pt-20 pb-32 text-center">
           <h2 className="text-4xl md:text-6xl font-black leading-tight mb-8 tracking-tight">
-            오늘 아침, <br />
-            당신의 기분을 망친 건 <br />
-            당신이 아닙니다.
+            Sáng nay, <br />
+            Điều làm hỏng tâm trạng của bạn <br />
+            Không phải là bạn.
           </h2>
-          <p className="text-lg md:text-xl font-medium leading-relaxed max-w-2xl mb-10 text-neutral-800">
-            자극적인 뉴스는 뇌의 코르티솔을 분비시켜 하루를 망칩니다.{" "}
+          <p className="text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-10 text-neutral-800">
+            Tin tức giật gân kích thích tiết cortisol trong não, phá hỏng cả ngày của bạn.{" "}
             <br className="hidden md:block" />
-            우리는 '도파민'과 '공포'를 제거하고, 오직{" "}
-            <strong>구조적 맥락(Context)</strong>만 남깁니다.
+            Chúng tôi loại bỏ 'Dopamine' và 'Nỗi sợ hãi', chỉ giữ lại{" "}
+            <strong>Bối cảnh cấu trúc (Context)</strong>.
           </p>
 
-          <form
-            onSubmit={handleSubscribe}
-            className="flex flex-col gap-3 max-w-md"
-          >
+          {/* Khu vực Micro Copy */}
+          <div className="flex flex-col items-center gap-4">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
             <input
               type="email"
-              placeholder="이메일 주소"
+              placeholder="Địa chỉ email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border-2 border-black p-3 focus:outline-none focus:ring-4 focus:ring-neutral-200 transition-all placeholder:text-neutral-400 font-mono text-sm"
@@ -88,10 +87,10 @@ export default function LandingPage() {
                 className="flex-1 bg-black text-white px-6 py-3 font-bold hover:bg-neutral-800 disabled:bg-neutral-500 transition-colors border-2 border-black whitespace-nowrap disabled:cursor-not-allowed"
               >
                 {status === "loading"
-                  ? "처리 중..."
+                  ? "Đang xử lý..."
                   : status === "success"
-                  ? "완료되었습니다"
-                  : "무료로 받아보기"}
+                  ? "Đã hoàn tất"
+                  : "Nhận miễn phí"}
               </button>
 
               <button
@@ -99,46 +98,47 @@ export default function LandingPage() {
                 onClick={() => setIsSampleOpen(true)}
                 className="px-6 py-3 font-bold bg-white text-black border-2 border-black hover:bg-neutral-100 transition-colors whitespace-nowrap"
               >
-                샘플 보기
+                Xem mẫu
               </button>
             </div>
 
-            {/* 마이크로 카피 영역 */}
+            {/* Khu vực Micro Copy */}
             <div className="mt-2">
               <p className="text-xs text-neutral-500 font-mono flex items-center gap-2">
                 <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                매일 아침 7시 발송. 광고 없음. 언제든 취소 가능.
+                Gửi lúc 7 giờ 30 phút sáng mỗi ngày. Không quảng cáo. Hủy bất cứ lúc nào.
               </p>
             </div>
 
             {status === "success" && (
               <p className="text-sm font-mono text-green-700 font-bold mt-2">
-                ✓ 구독이 완료되었습니다. 내일 아침에 만나요.
+                ✓ Đăng ký thành công. Hẹn gặp lại vào sáng mai.
               </p>
             )}
             {status === "duplicate" && (
               <p className="text-sm font-mono text-orange-600 mt-2">
-                ⚠️ 이미 구독 중인 이메일입니다.
+                ⚠️ Email này đã được đăng ký.
               </p>
             )}
             {status === "error" && (
               <p className="text-sm font-mono text-red-600 mt-2">
-                ✕ 오류가 발생했습니다. 다시 시도해주세요.
+                ✕ Đã xảy ra lỗi. Vui lòng thử lại.
               </p>
             )}
           </form>
+          </div>
         </section>
 
         <hr className="border-black" />
 
-        {/* 3. Authority: 권위와 근거 */}
+        {/* 3. Authority: Thẩm quyền và Căn cứ */}
         <section className="py-20">
           <blockquote className="text-2xl md:text-3xl font-serif italic mb-6">
-            "뉴스는 마음의 설탕이다.
+            "Tin tức là đường của tâm trí.
             <br />
-            당신의 몸에 정크푸드를 넣지 않듯,
+            Giống như bạn không nạp đồ ăn vặt vào cơ thể,
             <br />
-            뇌에도 독성 뉴스를 넣지 마라."
+            Đừng nạp tin tức độc hại vào não."
           </blockquote>
           <cite className="not-italic text-sm font-bold uppercase tracking-widest">
             — Rolf Dobelli, &lt;News Diet&gt;
@@ -147,46 +147,43 @@ export default function LandingPage() {
 
         <hr className="border-black" />
 
-        {/* 4. Comparison: Before & After (가장 중요) */}
+        {/* 4. Comparison: Trước & Sau (Quan trọng nhất) */}
         <section className="py-20">
           <h3 className="text-sm font-bold uppercase tracking-widest mb-10 text-neutral-500">
-            How It Works
+            Cách hoạt động
           </h3>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Bad Case */}
             <div className="border border-neutral-300 p-6 opacity-50 bg-neutral-50">
               <span className="text-xs font-bold text-red-600 uppercase mb-2 block">
-                Before (Noise)
+                Trước (Tiếng ồn)
               </span>
               <h4 className="text-xl font-bold mb-3 text-neutral-400 line-through decoration-red-500">
-                [충격] OO 정책 결국 파국 맞이하나... 시민들 "분노 폭발"
+                [Sốc] Chính sách OO cuối cùng cũng sụp đổ... Người dân "bùng nổ giận dữ"
               </h4>
               <p className="text-sm text-neutral-400">
-                격앙된 반응이 쏟아지고 있다. 네티즌들은 "말도 안 되는 처사"라며
-                비난을 멈추지 않고 있으며...
+                Phản ứng dữ dội đang đổ về. Cư dân mạng không ngừng chỉ trích rằng "đây là hành động vô lý"...
               </p>
             </div>
 
             {/* Good Case */}
             <div className="border-2 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
               <span className="text-xs font-bold text-green-700 uppercase mb-2 block">
-                After (Context)
+                Sau (Bối cảnh)
               </span>
               <h4 className="text-xl font-bold mb-3">
-                OO 정책 변경 발표 및 경제적 영향 분석
+                Công bố thay đổi chính sách OO và phân tích tác động kinh tế
               </h4>
               <ul className="text-sm space-y-2 list-disc list-inside">
                 <li>
-                  <strong>Fact:</strong> 정책 변경안의 핵심 내용은 A와 B입니다.
+                  <strong>Sự kiện:</strong> Nội dung cốt lõi của đề xuất thay đổi chính sách là A và B.
                 </li>
                 <li>
-                  <strong>Context:</strong> 이번 변경은 지난달 지표 하락에 대한
-                  대응책입니다.
+                  <strong>Bối cảnh:</strong> Sự thay đổi lần này là biện pháp đối phó với sự sụt giảm chỉ số tháng trước.
                 </li>
                 <li>
-                  <strong>Implication:</strong> 가계 부채에 단기적 변동이
-                  예상됩니다.
+                  <strong>Hàm ý:</strong> Dự kiến sẽ có biến động ngắn hạn đối với nợ hộ gia đình.
                 </li>
               </ul>
             </div>
@@ -195,26 +192,25 @@ export default function LandingPage() {
 
         <hr className="border-black" />
 
-        {/* 5. Features: 기능 설명 (AI 언급 최소화) */}
+        {/* 5. Features: Mô tả tính năng (Giảm thiểu nhắc đến AI) */}
         <section className="py-20 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h4 className="font-bold text-lg mb-2">① Noise Filtering</h4>
             <p className="text-sm text-neutral-600">
-              낚시성 헤드라인, 혐오 표현, 불필요한 형용사를 알고리즘으로 즉시
-              차단합니다.
+              Ngay lập tức chặn các tiêu đề câu view, ngôn từ kích động thù địch và các tính từ không cần thiết bằng thuật toán.
             </p>
           </div>
           <div>
             <h4 className="font-bold text-lg mb-2">② Context Synthesis</h4>
             <p className="text-sm text-neutral-600">
-              편향된 사설들을 통합하여, 진영 논리 뒤에 숨겨진{" "}
-              <strong>'구조적 쟁점'</strong>만 추출합니다.
+              Tổng hợp các bài xã luận thiên kiến, chỉ trích xuất{" "}
+              <strong>'vấn đề cấu trúc'</strong> ẩn sau logic phe phái.
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-lg mb-2">③ Daily 7:00 AM</h4>
+            <h4 className="font-bold text-lg mb-2">③ Daily 7:30 AM</h4>
             <p className="text-sm text-neutral-600">
-              출근길, 감정 소모 없이 3분 만에 세상의 흐름을 파악하세요.
+              Nắm bắt dòng chảy Việt Nam và thế giới chỉ trong 3 phút trên đường đi làm mà không tốn cảm xúc.
             </p>
           </div>
         </section>
@@ -226,7 +222,7 @@ export default function LandingPage() {
           Noise Off, Context On.
         </p>
         <p className="text-xs text-neutral-400">
-          © 2025 NoCan News. All rights reserved.
+          © 2026 Morning News. All rights reserved.
         </p>
       </footer>
 
@@ -249,11 +245,11 @@ export default function LandingPage() {
 
             <div className="text-center mb-8 border-b-2 border-black pb-4">
               <span className="text-xs font-mono bg-black text-white px-2 py-1 mb-2 inline-block">
-                SAMPLE EMAIL
+                EMAIL MẪU
               </span>
-              <h2 className="text-2xl font-bold">NoCan News</h2>
+              <h2 className="text-2xl font-bold">Morning News</h2>
               <p className="text-xs text-neutral-400 mt-1">
-                세상의 소음은 끄고, 구조적 맥락만 남긴다
+                Tắt tiếng ồn thế giới, chỉ giữ lại bối cảnh cấu trúc
               </p>
               <p className="text-sm text-neutral-500 mt-2">2025-12-27</p>
             </div>
@@ -262,130 +258,107 @@ export default function LandingPage() {
               {/* Protection Log */}
               <div className="bg-neutral-100 p-4 border-l-4 border-green-500">
                 <p className="text-sm font-bold text-green-700">
-                  🛡️ 오늘 AI가 총 1,247건을 스캔하여 범죄 45건, 가십 89건,
-                  정치적 비방 123건을 차단했습니다.
+                  🛡️ Hôm nay AI đã quét tổng cộng 1,247 tin, chặn 45 tin tội phạm, 89 tin đồn nhảm,
+                  123 tin phỉ báng chính trị.
                 </p>
               </div>
 
-              {/* 경제 섹션 */}
+              {/* Phần Kinh tế */}
               <div>
                 <h3 className="text-lg font-bold border-b-2 border-neutral-200 pb-2 mb-4">
-                  📌 경제
+                  📌 Kinh tế
                 </h3>
                 <div className="bg-neutral-50 p-4 rounded border-l-4 border-neutral-600">
                   <p className="text-xs text-neutral-400 line-through mb-2">
-                    1500원 환율 위기, 달러는 마르는데 돈 뿌리는 정부...저성장
-                    고착화될라
+                    Khủng hoảng tỷ giá 1500 won, đô la cạn kiệt nhưng chính phủ lại rải tiền... Lo ngại tăng trưởng thấp kéo dài
                   </p>
                   <h4 className="text-base font-bold mb-3">
-                    원/달러 환율 1480원대 기록, 수입 물가 상승에 영향
+                    Tỷ giá Won/USD ghi nhận mức 1480 won, ảnh hưởng đến giá nhập khẩu tăng
                   </h4>
                   <div className="bg-white p-3 text-sm space-y-2 border border-neutral-200">
                     <p>
-                      <span className="font-bold text-blue-600">📍 Fact:</span>{" "}
-                      원/달러 환율이 2025년 12월 1483.6원으로 8개월 만에
-                      최고치를 기록하며, 원자재를 포함한 수입 물가 지수와 소비자
-                      물가가 상승했습니다.
+                      <span className="font-bold text-blue-600">📍 Sự kiện:</span>{" "}
+                      Tỷ giá Won/USD ghi nhận mức cao nhất trong 8 tháng là 1483.6 won vào tháng 12 năm 2025, làm tăng chỉ số giá nhập khẩu bao gồm nguyên liệu thô và giá tiêu dùng.
                     </p>
                     <p>
                       <span className="font-bold text-yellow-600">
-                        📍 Context:
+                        📍 Bối cảnh:
                       </span>{" "}
-                      국내에 원화 공급이 많고 달러 유입이 부족한 상황이 원화
-                      약세의 주요 원인으로 지목되며, 주요국 통화 중 원화가 가장
-                      큰 폭의 약세를 보이고 있습니다.
+                      Tình trạng cung tiền Won trong nước nhiều và dòng vốn USD vào thiếu hụt được chỉ ra là nguyên nhân chính khiến đồng Won suy yếu, và đồng Won đang cho thấy mức giảm giá lớn nhất trong số các loại tiền tệ chính.
                     </p>
                     <p>
                       <span className="font-bold text-green-600">
-                        📍 Implication:
+                        📍 Hàm ý:
                       </span>{" "}
-                      지속적인 고환율은 물가 상승 압력으로 작용하여 가계 부담을
-                      가중시키고 경제 성장률에 부정적인 영향을 줄 수 있습니다.
+                      Tỷ giá hối đoái cao kéo dài sẽ gây áp lực tăng giá, gia tăng gánh nặng cho hộ gia đình và có thể ảnh hưởng tiêu cực đến tốc độ tăng trưởng kinh tế.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* 기술 섹션 */}
+              {/* Phần Công nghệ */}
               <div>
                 <h3 className="text-lg font-bold border-b-2 border-neutral-200 pb-2 mb-4">
-                  📌 기술
+                  📌 Công nghệ
                 </h3>
                 <div className="bg-neutral-50 p-4 rounded border-l-4 border-neutral-600">
                   <p className="text-xs text-neutral-400 line-through mb-2">
-                    &quot;더 이상 빌려 쓰지 않는다&quot;...삼성, 자체 GPU 개발
-                    &apos;기술 독립 선언&apos;
+                    "Không còn đi vay mượn nữa"... Samsung tuyên bố 'độc lập công nghệ' phát triển GPU riêng
                   </p>
                   <h4 className="text-base font-bold mb-3">
-                    삼성전자, 100% 독자 기술 모바일 GPU 개발 성공
+                    Samsung Electronics thành công phát triển GPU di động 100% công nghệ độc quyền
                   </h4>
                   <div className="bg-white p-3 text-sm space-y-2 border border-neutral-200">
                     <p>
-                      <span className="font-bold text-blue-600">📍 Fact:</span>{" "}
-                      삼성전자가 외부 기술 의존 없이 100% 독자 기술로 개발한
-                      모바일 GPU를 선보였으며, 이는 차기 엑시노스 제품에 탑재될
-                      예정입니다.
+                      <span className="font-bold text-blue-600">📍 Sự kiện:</span>{" "}
+                      Samsung Electronics đã giới thiệu GPU di động được phát triển bằng 100% công nghệ độc quyền mà không phụ thuộc vào công nghệ bên ngoài, và dự kiến sẽ được trang bị cho các sản phẩm Exynos tiếp theo.
                     </p>
                     <p>
                       <span className="font-bold text-yellow-600">
-                        📍 Context:
+                        📍 Bối cảnh:
                       </span>{" "}
-                      기존에는 미국 AMD의 기술을 토대로 GPU를 설계해왔으나, 이번
-                      자체 GPU 개발 성공으로 외부 지식 재산권 의존도를 낮추고
-                      막대한 수수료 지불을 절감하고자 합니다.
+                      Trước đây, GPU được thiết kế dựa trên công nghệ của AMD Mỹ, nhưng với thành công trong việc phát triển GPU riêng lần này, họ muốn giảm sự phụ thuộc vào sở hữu trí tuệ bên ngoài và tiết kiệm chi phí bản quyền khổng lồ.
                     </p>
                     <p>
                       <span className="font-bold text-green-600">
-                        📍 Implication:
+                        📍 Hàm ý:
                       </span>{" "}
-                      자체 GPU 개발은 삼성전자의 시스템 반도체 경쟁력을 강화하고
-                      AI 시대에 기술 독립성을 확보하는 중요한 전환점이 될
-                      것입니다.
+                      Việc phát triển GPU riêng sẽ củng cố khả năng cạnh tranh của Samsung Electronics trong lĩnh vực bán dẫn hệ thống và trở thành bước ngoặt quan trọng để đảm bảo sự độc lập về công nghệ trong kỷ nguyên AI.
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* 사설 분석 */}
-              <div className="bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 rounded-lg border border-neutral-200">
-                <h3 className="text-lg font-bold mb-2">⚖️ 오늘의 사설 분석</h3>
+              {/* Phân tích xã luận */}
+              <div className="bg-gradient-to-br from-neutral-50 to-neutral-100 p-4 rounded-lg border border-neutral-200">                <h3 className="text-lg font-bold mb-2">⚖️ Phân tích xã luận hôm nay</h3>
                 <p className="font-semibold text-neutral-700 mb-3">
-                  주 35시간 근로제 도입 논쟁
+                  Tranh luận về việc áp dụng chế độ làm việc 35 giờ/tuần
                 </p>
 
                 <div className="bg-white p-3 rounded mb-3 border border-neutral-200">
                   <p className="text-sm text-neutral-700">
                     <span className="font-bold text-red-600">
-                      🔴 핵심 쟁점:
+                      🔴 Vấn đề cốt lõi:
                     </span>{" "}
-                    노동자 삶의 질 향상 vs 기업 경쟁력 저하 우려. 양측은
-                    근로시간 단축의 시급성과 방법론에서 첨예하게 대립하고 있다.
+                    Nâng cao chất lượng cuộc sống người lao động vs Lo ngại giảm sức cạnh tranh của doanh nghiệp. Hai bên đang đối đầu gay gắt về tính cấp thiết và phương pháp rút ngắn thời gian làm việc.
                   </p>
                 </div>
 
                 <div className="space-y-3 text-sm">
                   <div className="bg-red-50 p-3 rounded text-neutral-700">
                     <span className="font-bold text-red-700 block mb-1">
-                      보수 측 논리
+                      Logic phe bảo thủ
                     </span>
-                    한국의 노동생산성은 OECD 평균 대비 낮은 수준이다. 이
-                    상황에서 근로시간을 일방적으로 단축하면 기업의 경쟁력 약화로
-                    이어질 수 있으며, 결국 고용 감소라는 역효과를 초래할 수
-                    있다.
+                    Năng suất lao động của Hàn Quốc thấp hơn mức trung bình của OECD. Trong tình hình này, việc đơn phương rút ngắn thời gian làm việc có thể dẫn đến suy yếu sức cạnh tranh của doanh nghiệp, và cuối cùng có thể gây ra tác dụng ngược là giảm việc làm.
                   </div>
                   <div className="bg-blue-50 p-3 rounded text-neutral-700">
                     <span className="font-bold text-blue-700 block mb-1">
-                      진보 측 논리
+                      Logic phe tiến bộ
                     </span>
-                    장시간 노동은 노동자의 건강권을 침해하고 삶의 질을
-                    저하시킨다. 근로시간 단축은 노동자의 기본권 보호 차원에서
-                    필수적이며, 오히려 집중력 향상과 이직률 감소를 통해
-                    장기적으로 생산성 향상에 기여할 수 있다.
+                    Làm việc nhiều giờ xâm phạm quyền sức khỏe của người lao động và làm giảm chất lượng cuộc sống. Rút ngắn thời gian làm việc là cần thiết để bảo vệ các quyền cơ bản của người lao động, và thậm chí có thể góp phần tăng năng suất trong dài hạn thông qua việc cải thiện sự tập trung và giảm tỷ lệ nghỉ việc.
                   </div>
                   <div className="bg-neutral-200 p-3 rounded font-medium text-neutral-800">
-                    💡 구조적 의미: 이 논쟁은 단순한 노동시간의 문제가 아니라,
-                    한국 사회가 추구하는 성장 모델과 삶의 가치에 대한 근본적
-                    질문이다.
+                    💡 Ý nghĩa cấu trúc: Cuộc tranh luận này không chỉ là vấn đề thời gian làm việc đơn thuần, mà là câu hỏi căn bản về mô hình tăng trưởng và giá trị cuộc sống mà xã hội Hàn Quốc theo đuổi.
                   </div>
                 </div>
               </div>
@@ -395,7 +368,7 @@ export default function LandingPage() {
                   onClick={() => setIsSampleOpen(false)}
                   className="bg-black text-white px-8 py-3 font-bold hover:bg-neutral-800"
                 >
-                  이런 뉴스를 받아볼래요
+                  Tôi muốn nhận tin tức như thế này
                 </button>
               </div>
             </div>
